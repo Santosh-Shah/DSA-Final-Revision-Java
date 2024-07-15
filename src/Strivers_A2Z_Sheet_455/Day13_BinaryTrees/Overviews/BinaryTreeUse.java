@@ -197,6 +197,21 @@ public class BinaryTreeUse {
         replaceWithDepthKHelper(root.right, depth, k + 1);
     }
 
+    // TODO: Remove leaf nodes
+    public static BinaryTreeNode<Integer> removeLeafNode(BinaryTreeNode<Integer> head) {
+        // Base case
+        if (head == null) {
+            return null;
+        }
+
+        if (head.left == null && head.right == null) {
+            return null;
+        }
+        head.left = removeLeafNode(head.left);
+        head.right = removeLeafNode(head.right);
+        return head;
+    }
+
     public static void main(String[] args) {
 //        BinaryTreeNode<Integer> root = new BinaryTreeNode<>(1);
 //        BinaryTreeNode<Integer> rootLeft = new BinaryTreeNode<>(20);
@@ -217,10 +232,10 @@ public class BinaryTreeUse {
 //        BinaryTreeNode<Integer> head = takeTreeInput();
 //        printTreeDetailed(head);
 
-        BinaryTreeNode<Integer> head = takeTreeInputBetter(true, 0, false);
-        printTreeDetailed(head);
-        System.out.println("Number of nodes: " + numsNodes(head));
-        System.out.println("Sum of nodes: " + sumOfNodes(head));
+//        BinaryTreeNode<Integer> head = takeTreeInputBetter(true, 0, false);
+//        printTreeDetailed(head);
+//        System.out.println("Number of nodes: " + numsNodes(head));
+//        System.out.println("Sum of nodes: " + sumOfNodes(head));
 
 //        System.out.println("*******PreOrder Traversal******");
 //        printPreOrder(head);
@@ -245,7 +260,16 @@ public class BinaryTreeUse {
 //        System.out.println("Number of leafNode: " + countLeafNodes(head));
 
 //        printNodeAtDepthK(head, 1);
-        replaceWithDepthK(head, 1);
+//        replaceWithDepthK(head, 1);
+//        printTreeDetailed(head);
+
+
+        // TODO: remove leaf node
+        BinaryTreeNode<Integer> head = takeTreeInputBetter(true, 0, false);
         printTreeDetailed(head);
+        head = removeLeafNode(head);
+        printTreeDetailed(head);
+
+
     }
 }
