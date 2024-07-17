@@ -23,32 +23,6 @@ public class Q4_IsBalancedBetter {
         printTreeDetailed(root.right);
     }
 
-    // TODO: height of tree
-    public static int treeHeight(BinaryTreeNode<Integer> root) {
-        if (root == null) return 0;
-
-        int leftHeight = treeHeight(root.left);
-        int rightHeight = treeHeight(root.right);
-
-        return 1 + Math.max(leftHeight, rightHeight);
-    }
-
-    //TODO: check tree is balanced or not
-    public static boolean isBalanced(BinaryTreeNode<Integer> root) {
-        if (root == null) return true;
-
-        int leftHeight = treeHeight(root.left);
-        int rightHeight = treeHeight(root.right);
-
-        if (Math.abs(leftHeight - rightHeight) > 1) {
-            return false;
-        }
-
-        boolean leftBalanced = isBalanced(root.left);
-        boolean rightBalanced = isBalanced(root.right);
-        return leftBalanced && rightBalanced;
-    }
-
     public static BinaryTreeNode<Integer> takeTreeInputBetter(boolean isRoot, int parentData, boolean isLeft) {
         if(isRoot) {
             System.out.println("Enter root data: ");
@@ -75,11 +49,52 @@ public class Q4_IsBalancedBetter {
         return root;
     }
 
+
+    // TODO: height of tree
+    public static int treeHeight(BinaryTreeNode<Integer> root) {
+        if (root == null) return 0;
+
+        int leftHeight = treeHeight(root.left);
+        int rightHeight = treeHeight(root.right);
+
+        return 1 + Math.max(leftHeight, rightHeight);
+    }
+
+    //TODO: check tree is balanced or not
+    public static BalancedTreeReturn isBalancedBetter(BinaryTreeNode<Integer> root) {
+        if (root == null) {
+            int height = 0;
+            boolean isBal = true;
+            BalancedTreeReturn ans = new BalancedTreeReturn();
+            ans.isBalanced = isBal;
+            ans.height = height;
+            return ans;
+        }
+
+        BalancedTreeReturn leftOutput = isBalancedBetter(root.left);
+        BalancedTreeReturn rightOutput = isBalancedBetter(root.right);
+        boolean isBal = true;
+        int height = 1 + Math.max(leftOutput.height, rightOutput.height);
+
+        if (Math.abs(leftOutput.height - rightOutput.height) > 1) {
+            isBal = false;
+        }
+
+        if (!leftOutput.isBalanced || !rightOutput.isBalanced) {
+            isBal = false;
+        }
+
+        BalancedTreeReturn output = new BalancedTreeReturn();
+        output.isBalanced = isBal;
+        output.height = height;
+        return output;
+    }
+
     public static void main(String[] args) {
         BinaryTreeNode<Integer> head = takeTreeInputBetter(true, 0, false);
         printTreeDetailed(head);
         System.out.println("\n-----------Output------------");
-        System.out.println("Is Balanced? " + isBalanced(head));
+        System.out.println("Is Balanced? " + isBalancedBetter(head).isBalanced);
     }
 }
 
