@@ -2,9 +2,11 @@ package Strivers_A2Z_Sheet_455.Day13_BinaryTrees.Overviews.Questions;
 
 import Strivers_A2Z_Sheet_455.Day13_BinaryTrees.Overviews.BinaryTreeNode;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
-public class Q4_IsBalancedBetter {
+public class Q7_TakeInputLevelWise {
     public static void printTreeDetailed(BinaryTreeNode<Integer> root) {
         //Base case
         if(root==null) return;
@@ -61,40 +63,47 @@ public class Q4_IsBalancedBetter {
     }
 
     //TODO: check tree is balanced or not
-    public static BalancedTreeReturn isBalancedBetter(BinaryTreeNode<Integer> root) {
-        if (root == null) {
-            int height = 0;
-            boolean isBal = true;
-            BalancedTreeReturn ans = new BalancedTreeReturn();
-            ans.isBalanced = isBal;
-            ans.height = height;
-            return ans;
+    public static BinaryTreeNode<Integer> takeInputLevelWise() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter root data: ");
+        int rootData = sc.nextInt();
+        if (rootData == -1) {
+            return null;
         }
 
-        BalancedTreeReturn leftOutput = isBalancedBetter(root.left);
-        BalancedTreeReturn rightOutput = isBalancedBetter(root.right);
-        boolean isBal = true;
-        int height = 1 + Math.max(leftOutput.height, rightOutput.height);
+        BinaryTreeNode<Integer> root = new BinaryTreeNode<>(rootData);
+        Queue<BinaryTreeNode<Integer>> pendingChildren = new LinkedList<>();
+        pendingChildren.add(root);
 
-        if (Math.abs(leftOutput.height - rightOutput.height) > 1) {
-            isBal = false;
+        while (!pendingChildren.isEmpty()) {
+            BinaryTreeNode<Integer> front = pendingChildren.poll();
+            System.out.println("Enter left child of " + front.data);
+            int leftData = sc.nextInt();
+
+            if (leftData != -1) {
+                BinaryTreeNode<Integer> leftChild = new BinaryTreeNode<>(leftData);
+                front.left = leftChild;
+                pendingChildren.add(leftChild);
+            }
+
+            System.out.println("Enter right child of " + front.data);
+            int rightData = sc.nextInt();
+            if (rightData != -1) {
+                BinaryTreeNode<Integer> rightChild = new BinaryTreeNode<>(rightData);
+                front.right = rightChild;
+                pendingChildren.add(rightChild);
+            }
         }
-
-        if (!leftOutput.isBalanced || !rightOutput.isBalanced) {
-            isBal = false;
-        }
-
-        BalancedTreeReturn output = new BalancedTreeReturn();
-        output.isBalanced = isBal;
-        output.height = height;
-        return output;
+        return root;
     }
 
+
     public static void main(String[] args) {
-        BinaryTreeNode<Integer> head = takeTreeInputBetter(true, 0, false);
+//        BinaryTreeNode<Integer> head = takeTreeInputBetter(true, 0, false);
+        BinaryTreeNode<Integer> head = takeInputLevelWise();
         printTreeDetailed(head);
         System.out.println("\n-----------Output------------");
-        System.out.println("Is Balanced? " + isBalancedBetter(head).isBalanced);
+//        System.out.println("Is Balanced? " + isBalancedBetter(head).isBalanced);
     }
 }
 
